@@ -2,6 +2,21 @@ import torch.nn as nn
 import torch
 import math
 
+"""
+vocab = {}  # 단어 집합의 각 단어에 고유한 정수를 맵핑한 dict
+
+embedding_layer = nn.Embedding(
+    num_embeddings=len(vocab), embedding_dim=3, padding_idx=1
+)
+# num_embedding = corpus 크기
+# embeding_dim = embedding vector dimension
+# padding_idx = (optional) 패딩을 위한 토큰의 인덱스
+
+print(
+    embedding_layer.weight
+)  # 단어 집합 + <unk>, <pad>에 대한 weight를 2차원 tensor형태로 반환
+"""
+
 
 # Token Embedding
 class TokenEmbedding(nn.Embedding):
