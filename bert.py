@@ -32,3 +32,5 @@ class BERT(nn.Moduel):
         # run multiple transforemr block
         for transformer in self.transforemr_blocks:
             x = transformer.forward(x, mask)
+
+        return x
