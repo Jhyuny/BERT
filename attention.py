@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import math
 
+
 class ScaleDotProductAttention(nn.Module):
     def __init__(self):
         super().__init__()
@@ -50,7 +51,6 @@ class MultiHeadAttention(nn.Module):
         self.w_o = nn.Linear(d_model, d_model)
         self.attention = ScaleDotProductAttention()
 
-
     def forward(self, q, k, v, mask=None):
         # [batch_size, seq_len, d_model]
         batch_size, _, _ = q.size()
@@ -62,15 +62,15 @@ class MultiHeadAttention(nn.Module):
         # 원래 [batch_size, seq_len, d_model]
         # view method를 이용해서 [batch_size, seq_len, head, head_dim]
         # transpose를 통해 [batch_size, head, seq_len, head_dim]
-        q = q.view(batch_size, -1, self.head, self.head_dim).transpose(1,2)
-        k = k.view(batch_size, -1, self.head, self.head_dim).transpose(1,2)
-        v = v.view(batch_size, -1, self.head, self.head_dim).transpose(1,2)
+        q = q.view(batch_size, -1, self.head, self.head_dim).transpose(1, 2)
+        k = k.view(batch_size, -1, self.head, self.head_dim).transpose(1, 2)
+        v = v.view(batch_size, -1, self.head, self.head_dim).transpose(1, 2)
 
         # 3. Scaled Dot-Product Attention 수행
-        out, attention_score = self.attention(q,k,v,mask)
+        out, attention_score = self.attention(q, k, v, mask)
 
         # 4. 분리된 head들을 concat
-        out = out.transpose(1,2).contiguous().view(batch_size, -1, self.d_model)
+        out = out.transpose(1, 2).contiguous().view(batch_size, -1, self.d_model)
 
         # 5. d_model 차원으로 projection
         out = self.w_o(out)
