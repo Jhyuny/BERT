@@ -1,5 +1,7 @@
-# MLM (Masked Language Model)
 import torch.nn as nn
+from .bert import BERT
+
+# MLM (Masked Language Model)
 
 class MaskedLanguageModel(nn.Module) :
     def __init__(self, hidden, vocab_size):
@@ -20,3 +22,15 @@ class NextSentencePrediction(nn.Module):
 
     def forward(self,x):
         return self.softmax(self.linear(x[:,0]))
+    
+# BERT language_model
+class BERTLTM(nn.Module):
+    def __init__(self, bert : BERT, vocab_size):
+        super().__init__()
+        self.bert = bert
+        self.next_sentence = NextSentencePrediction(self.bert.hidden)
+        self.mask_lm = MaskedLanguageModel(self.bert.hidden, vocab_size)
+    
+    def forward(self, x, segment_label):
+        x = self.bert(x, segment_label)
+        return self.next_sentence(x), self.mask_lm
