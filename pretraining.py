@@ -24,7 +24,7 @@ class NextSentencePrediction(nn.Module):
         return self.softmax(self.linear(x[:,0]))
     
 # BERT language_model
-class BERTLTM(nn.Module):
+class BERTLM(nn.Module):
     def __init__(self, bert : BERT, vocab_size):
         super().__init__()
         self.bert = bert
