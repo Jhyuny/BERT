@@ -77,7 +77,7 @@ class BERTDataset(Dataset):
 
         return {key: torch.tensor(value) for key, value in output.items()}
 
-    def random_word(self, sentence):
+    def random_word(self, sentence):  # 문장 내의 단어들을 15% 확률로 마스킹
         tokens = sentence.split()
         output_label = []
 
@@ -86,15 +86,15 @@ class BERTDataset(Dataset):
             if prob < 0.15:
                 prob /= 0.15  # 15% in paper
 
-                # 80% randomly change token to mask token
+                # 80% randomly change token to [MASK]
                 if prob < 0.8:
                     tokens[i] = self.vocab.mask_index
 
-                # 10% randomly change token to random token
+                # 10% randomly change token to [random token]
                 elif prob < 0.9:
                     tokens[i] = random.randrange(len(self.vocab))
 
-                # 10% randomly change token to current token
+                # 10% randomly change token to [current token]
                 else:
                     tokens[i] = self.vocab.stoi.get(token, self.vocab.unk_index)
 
