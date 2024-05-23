@@ -11,7 +11,7 @@ class MaskedLanguageModel(nn.Module):
         self.softmax = nn.LogSoftmax(dim=-1)
 
     def forward(self, x):
-        return self.softmax(self.linear(x))
+        return self.softmax(self.linear(x))  # 각 단어의 로그 확률을 반환
 
 
 # NSP (Next Sentence Prediction)
